@@ -1,20 +1,5 @@
-*.py[co]
+node_modules
+./.env
 
-# Default development database
-devdata.db
-
-# Default data directory
-data/*
-
-# Packages
-*.egg
-*.egg-info
-dist
-build
-
-# Installer logs
-pip-log.txt
-
-# Unit test / coverage reports
-.coverage
-.tox
+index.js
+index.d.ts

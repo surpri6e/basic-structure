@@ -1,0 +1,34 @@
+{
+    "name": "basic-structure",
+    "version": "1.0.0",
+    "description": "basic structure for my node.js project on typescript",
+    "main": "index.js",
+    "type": "module",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/surpri6e/basic-structure.git"
+    },
+    "scripts": {
+        "dev": "tsc && node index.js",
+        "build": "tsc",
+        "deploy": "npm pulish"
+    },
+    "author": "surpri6e",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^20.14.2",
+        "prettier": "^3.3.2"
+    },
+    "dependencies": {
+        "typescript": "^5.4.5"
+    },
+    "keywords": [
+        "basic structure",
+        "file structure",
+        "structure of files"
+    ],
+    "bugs": {
+        "url": "https://github.com/surpri6e/basic-structure/issues"
+    },
+    "homepage": "https://github.com/surpri6e/basic-structure#readme"
+}

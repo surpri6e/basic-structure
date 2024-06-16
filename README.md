@@ -1,2 +1,3 @@
-# basic-structure
-basic-structure
+# Basic structure
+
+My basic files structure for node.js project on typescript.
