@@ -1,7 +1,7 @@
 {
-    "name": "basic-structure",
+    "name": "create-basic-structure",
     "version": "1.0.0",
-    "description": "basic structure for my node.js project on typescript",
+    "description": "create basic structure for my node.js project on typescript",
     "main": "index.js",
     "type": "module",
     "repository": {
@@ -11,7 +11,7 @@
     "scripts": {
         "dev": "tsc && node index.js",
         "build": "tsc",
-        "deploy": "npm pulish"
+        "deploy": "npm publish"
     },
     "author": "surpri6e",
     "license": "MIT",
