@@ -1,6 +1,6 @@
 {
     "name": "create-basic-structure",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "create basic structure for my node.js project on typescript",
     "main": "index.js",
     "type": "module",
@@ -35,6 +35,6 @@
     },
     "homepage": "https://github.com/surpri6e/basic-structure#readme",
     "bin": {
-        "my-npx-command": "index.js"
+        "create-basic-structure": "index.js"
     }
 }
