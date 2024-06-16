@@ -1,14 +1,16 @@
 {
+    "include": ["build.config.ts", "src", "__tests__"],
+    "exclude": ["./example/", "./node_modules/"],
     "compilerOptions": {
-        "target": "ES2017",
-        "module": "ES2022",
-        "declaration": true,
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
+        "outDir": "dist",
+        "target": "ES2022",
+        "module": "ES2020",
+        "moduleResolution": "bundler",
         "strict": true,
         "skipLibCheck": true,
-        "moduleResolution": "node"
-    },
-
-    "exclude": ["./example/", "./node_modules/"]
+        "declaration": false,
+        "sourceMap": false,
+        "noUnusedLocals": true,
+        "esModuleInterop": true
+    }
 }

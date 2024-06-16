@@ -1,6 +1,6 @@
 {
-    "name": "create-basic-structure",
-    "version": "1.0.1",
+    "name": "create-base-struct",
+    "version": "1.0.10",
     "description": "create basic structure for my node.js project on typescript",
     "main": "index.js",
     "type": "module",
@@ -8,9 +8,16 @@
         "type": "git",
         "url": "git+https://github.com/surpri6e/basic-structure.git"
     },
+    "files": [
+        "index.js",
+        "dist",
+        "example"
+    ],
     "scripts": {
-        "dev": "tsc && node index.js",
-        "build": "tsc",
+        "dev": "unbuild --stub",
+        "build": "unbuild",
+        "typecheck": "tsc --noEmit",
+        "prepublishOnly": "npm run build",
         "deploy": "npm publish"
     },
     "author": "surpri6e",
@@ -23,7 +30,8 @@
     "dependencies": {
         "chalk": "^4.1.2",
         "prompts": "^2.4.2",
-        "typescript": "^5.4.5"
+        "typescript": "^5.4.5",
+        "unbuild": "^2.0.0"
     },
     "keywords": [
         "basic structure",
