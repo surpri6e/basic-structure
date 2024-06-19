@@ -1,5 +1,2 @@
 node_modules
 .env
-
-src/*.js
-src/*.d.ts

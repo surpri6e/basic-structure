@@ -3,13 +3,13 @@
     "version": "1.0.0",
     "description": "basic structure for my node.js project on typescript",
     "main": "index.js",
-    "type": "module",
+    "type": "commonjs",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/surpri6e/basic-structure.git"
     },
     "scripts": {
-        "dev": "tsc && node index.js",
+        "dev": "tsc && node src/index.js",
         "build": "tsc",
         "deploy": "npm pulish"
     },

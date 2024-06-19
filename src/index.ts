@@ -1,77 +1,91 @@
 import path from 'node:path';
-import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import prompts, { PromptObject } from 'prompts';
 import chalk from 'chalk';
 import { fileURLToPath } from 'node:url';
 
-console.log(process.cwd());
+const question: PromptObject<string>[] = [
+    {
+        type: 'text',
+        name: 'folder',
+        message: 'Enter a path of project',
+    },
+    {
+        type: 'text',
+        name: 'name',
+        message: 'Enter a name of your project',
+    },
+];
 
-const question: PromptObject<string> = {
-    type: 'text',
-    name: 'folder',
-    message: 'Укажите путь до развертывания',
-};
-
-async function getDestanationFolder() {
-    const response = await prompts(question);
-    return response.folder;
+interface IAnswer {
+    folder: string;
+    name: string;
 }
 
-const basicFilesNames = ['tsconfig.json', 'README.md', 'LICENSE', '.prettierrc', '.npmignore', '.gitignore', '.env', 'package.json'];
+async function getAnswers(): Promise<IAnswer> {
+    const response = await prompts(question);
 
-// async function copyBasicFiles(destanationFolder: string) {
-//     try {
-//         if (destanationFolder !== '.') {
-//             await fsp.mkdir(path.resolve(destanationFolder));
-//         }
+    return {
+        folder: response.folder,
+        name: response.name,
+    };
+}
 
-//         await fsp.mkdir(path.resolve(destanationFolder, 'src'));
-
-//         await fsp.copyFile(path.resolve('example', 'src', 'index.ts'), path.resolve(destanationFolder, 'src', 'index.ts'));
-
-//         basicFilesNames.forEach(async (name) => {
-//             await fsp.copyFile(path.resolve('example', name), path.resolve(destanationFolder, name));
-//         });
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
-
-const copyFilesAndDirectories = async (source: string, destination: string) => {
-    const entries = await fsp.readdir(source);
+const copyFilesAndDirectories = async (from: string, to: string) => {
+    const entries = await fsp.readdir(from);
 
     for (const entry of entries) {
-        const sourcePath = path.join(source, entry);
-        const destPath = path.join(destination, entry);
+        const sourcePath = path.join(from, entry);
+        const destPath = path.join(to, entry);
 
         const stat = await fsp.lstat(sourcePath);
 
         if (stat.isDirectory()) {
-            // Create the directory in the destination
             await fsp.mkdir(destPath);
-
-            // Recursively copy files and subdirectories
             await copyFilesAndDirectories(sourcePath, destPath);
         } else {
-            // Copy the file
             await fsp.copyFile(sourcePath, destPath);
         }
     }
 };
 
+const renamePackageJsonName = async (targetDir: string, projectName: string) => {
+    const packageJsonPath = path.join(targetDir, 'package.json');
+
+    try {
+        const packageJsonData = await fsp.readFile(packageJsonPath, 'utf8');
+        const packageJson = JSON.parse(packageJsonData);
+        packageJson.name = projectName;
+        await fsp.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 4), 'utf8');
+    } catch (error: unknown) {
+        if (typeof error === 'string') {
+            throw new Error(error);
+        }
+    }
+};
+
 (async () => {
-    const destanationFolder = await getDestanationFolder();
-    const targetDir = path.join(process.cwd(), destanationFolder);
-    const sourceDir = path.resolve(fileURLToPath(import.meta.url), '../../example');
-    // await copyBasicFiles(destanationFolder);
-    fs.mkdirSync(targetDir, { recursive: true });
-    await copyFilesAndDirectories(sourceDir, targetDir);
+    try {
+        const { folder, name } = await getAnswers();
 
-    fs.renameSync(path.join(targetDir, '_env'), path.join(targetDir, '.env'));
-    fs.renameSync(path.join(targetDir, '_gitignore'), path.join(targetDir, '.gitignore'));
-    fs.renameSync(path.join(targetDir, '_npmignore'), path.join(targetDir, '.npmignore'));
+        const to = path.join(process.cwd(), folder);
+        const from = path.resolve(fileURLToPath(import.meta.url), '..', '..', 'example');
 
-    console.log(chalk.red('Все успешно развернуто!'));
-    console.log(chalk.red('Введите команду npm install'));
+        await fsp.mkdir(to, { recursive: true });
+        await copyFilesAndDirectories(from, to);
+        await renamePackageJsonName(to, name);
+
+        fsp.rename(path.join(to, '_env'), path.join(to, '.env'));
+        fsp.rename(path.join(to, '_gitignore'), path.join(to, '.gitignore'));
+        fsp.rename(path.join(to, '_npmignore'), path.join(to, '.npmignore'));
+
+        console.log(chalk.green('Success all'));
+        console.log(chalk.green('Enter command - npm install'));
+    } catch (error: unknown) {
+        if (typeof error === 'string') {
+            console.log(error);
+        }
+
+        console.log(chalk.red('Something went wrong!'));
+    }
 })();

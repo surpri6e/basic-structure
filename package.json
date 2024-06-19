@@ -1,6 +1,6 @@
 {
     "name": "create-base-struct",
-    "version": "1.0.10",
+    "version": "1.0.11",
     "description": "create basic structure for my node.js project on typescript",
     "main": "index.js",
     "type": "module",
